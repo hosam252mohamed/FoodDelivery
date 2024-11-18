@@ -1,0 +1,98 @@
+﻿@model FoodDelivery.Models.Booking
+
+@{
+    ViewData["Title"] = "Edit Booking";
+}
+
+<h2 class="mt-4 text-center text-orange animate__animated animate__fadeInDown">Edit Booking</h2>
+
+<div class="card p-4 mt-4 shadow-lg border-0 animate__animated animate__zoomIn" style="max-width: 700px; margin: 0 auto;">
+    <form asp-action="Edit">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-floating mb-4">
+            <input asp-for="CustomerName" class="form-control" placeholder="Customer Name" />
+            <label asp-for="CustomerName">Customer Name</label>
+            <span asp-validation-for="CustomerName" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input asp-for="Email" class="form-control" placeholder="Email" />
+            <label asp-for="Email">Email</label>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input asp-for="DateAndTime" class="form-control" type="datetime-local" placeholder="Date and Time" />
+            <label asp-for="DateAndTime">Date and Time</label>
+            <span asp-validation-for="DateAndTime" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <input asp-for="NumberOfPeople" class="form-control" placeholder="Number of People" />
+            <label asp-for="NumberOfPeople">Number of People</label>
+            <span asp-validation-for="NumberOfPeople" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <textarea asp-for="SpecialRequest" class="form-control" placeholder="Special Request" style="height: 100px;"></textarea>
+            <label asp-for="SpecialRequest">Special Request</label>
+            <span asp-validation-for="SpecialRequest" class="text-danger"></span>
+        </div>
+
+        <div class="form-floating mb-4">
+            <select asp-for="Status" class="form-select">
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Canceled">Canceled</option>
+            </select>
+            <label asp-for="Status">Status</label>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-orange w-45 animate__animated animate__pulse animate__infinite">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary w-45">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Styles {
+    <style>
+        .text-orange {
+            color: #FF5733; /* Orange color for headers */
+        }
+
+        .btn-orange {
+            background-color: #FF5733; /* Orange color for buttons */
+            border-color: #FF5733;
+            color: #fff;
+        }
+
+        .btn-orange:hover {
+            background-color: #E14F2D; /* Darker orange on hover */
+            border-color: #E14F2D;
+        }
+
+        /* Animation using animate.css */
+        .animate__animated {
+            animation-duration: 1s;
+        }
+
+        .animate__pulse {
+            animation-duration: 2s;
+        }
+
+        /* Responsive card width */
+        media (max-width: 768px) {
+            .card {
+                width: 90%;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"></script>
+}

@@ -1,0 +1,139 @@
+﻿@model Coupun
+
+@{
+    ViewData["Title"] = Model.CoupunID == 0 ? "Create" : "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var c = Html.GetEnumSelectList<CoupunType>();
+    SelectList items = new SelectList(c, "Text", "Text");
+}
+
+<style>
+    /* Modern and centered form styling */
+    .coupon-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .coupon-box {
+        width: 100%;
+        max-width: 500px;
+        padding: 40px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control, .btn {
+        border-radius: 50px;
+    }
+
+    .form-group > label {
+        padding-left: 10px;
+    }
+
+    .btn-primary {
+        background-color: #ff9800;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #e68a00;
+        }
+
+    h1, h4 {
+        font-weight: bold;
+        color: #ff9800;
+    }
+
+    .back-link {
+        color: #ff9800;
+        text-decoration: none;
+    }
+
+        .back-link:hover {
+            color: #e68a00;
+            text-decoration: underline;
+        }
+
+</style>
+
+<div class="coupon-container">
+    <div class="coupon-box">
+        @if (Model.CoupunID == 0)
+        {
+            <h1 class="text-center">Create</h1>
+        }
+        else
+        {
+            <h1 class="text-center">Update</h1>
+        }
+        <h4 class="text-center">Coupon</h4>
+        <hr />
+        <form asp-action="Upsert" method="post" class="row gap-2">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="CoupunID" hidden />
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Type" class="control-label">Type</label>
+                <select asp-for="Type" asp-items="@items" class="form-control"></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Discount" class="control-label">Discount</label>
+                <input asp-for="Discount" class="form-control" />
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MinAmount" class="control-label">Minimum Amount</label>
+                <input asp-for="MinAmount" class="form-control" />
+                <span asp-validation-for="MinAmount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ValidTo" class="control-label" >Expiration Date</label>
+                <input asp-for="ValidTo" id="validTo" type="date" class="form-control" />
+                <span asp-validation-for="ValidTo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <input class="form-check-input" asp-for="IsActive" />
+                <label class="form-check-label">Is Active</label>
+            </div>
+
+            <div class="form-group mb-3">
+                @if (Model.CoupunID == 0)
+                {
+                    <input type="submit" value="Create" class="w-100 btn btn-lg btn-primary" />
+                }
+                else
+                {
+                    <input type="submit" value="Update" class="w-100 btn btn-lg btn-primary" />
+                }
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-action="Index" class="back-link">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var today = new Date().toISOString().split("T")[0];
+        document.getElementById("validTo").min = today;
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

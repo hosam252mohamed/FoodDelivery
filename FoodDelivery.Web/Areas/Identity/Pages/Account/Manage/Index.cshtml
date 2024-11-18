@@ -1,0 +1,107 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+}
+
+<div class="container profile-container mt-5">
+    <h3 class="text-center">@ViewData["Title"]</h3>
+    <partial name="_StatusMessage" for="StatusMessage" />
+
+    <div class="row mt-4 justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow border-0 p-4">
+                <h4 class="text-center mb-4">Manage Your Profile</h4>
+                <form id="profile-form" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                        <label asp-for="Username" class="form-label"></label>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." />
+                        <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <button id="update-profile-button" type="submit" class="btn btn-lg btn-primary w-100">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* Orange-themed styling for profile page */
+        .profile-container {
+            max-width: 900px;
+            background-color: #fdf9f4; /* Light neutral background */
+            border-radius: 10px;
+            padding: 40px;
+        }
+
+        .card {
+            border-radius: 15px;
+            background-color: #fff; /* White background for cards */
+        }
+
+        .form-control {
+            padding: 20px;
+            font-size: 16px;
+            border: 1px solid #ffa726; /* Orange border */
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+            .form-control:focus {
+                border-color: #fb8c00; /* Darker orange on focus */
+                box-shadow: 0 0 10px rgba(251, 140, 0, 0.4); /* Soft shadow on focus */
+            }
+
+        .form-label {
+            color: #fb8c00; /* Darker orange labels */
+        }
+
+        .btn-primary {
+            background-color: #ff9800; /* Orange button */
+            border-color: #ff9800;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+            .btn-primary:hover {
+                background-color: #fb8c00; /* Darker orange on hover */
+                border-color: #fb8c00;
+            }
+
+        h3, h4 {
+            color: #fb8c00; /* Orange headings */
+        }
+
+        /* Media query for responsiveness */
+        @@media (max-width: 768px) {
+            .profile-container {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .btn {
+                font-size: 18px;
+            }
+
+            h3, h4 {
+                font-size: 24px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

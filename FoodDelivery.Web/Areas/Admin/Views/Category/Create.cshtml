@@ -1,0 +1,79 @@
+﻿@model Category
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Modern and centered form styling */
+    .create-category-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .create-category-box {
+        width: 100%;
+        max-width: 400px;
+        padding: 40px;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control, .btn {
+        border-radius: 50px;
+    }
+
+    .form-group > label {
+        padding-left: 20px;
+    }
+
+    .btn-primary {
+        background-color: #ff9800;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #e68a00;
+        }
+
+    h1, h4 {
+        font-weight: bold;
+        color: #ff9800;
+    }
+
+</style>
+
+<div class="create-category-container">
+    <div class="create-category-box">
+        <h1 class="text-center">Create</h1>
+        <h4 class="text-center">Category</h4>
+        <hr />
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-2">
+                <label asp-for="Name" class="control-label">Category Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="w-100 btn btn-lg btn-primary" />
+            </div>
+        </form>
+
+        <div class="text-center mt-3">
+            <a asp-action="Index" class="btn btn-link" style="color: #ff9800;">Back to List</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,96 @@
+﻿@model FoodDelivery.Models.ViewModels.ProductVM
+
+@{
+    ViewData["Title"] = Model.ProductID == 0 ? "Create" : "Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    SelectList items = new SelectList(ViewBag.Categories, "CategoryID", "Name");
+}
+
+<h1 class="text-center">@ViewData["Title"] Product</h1>
+<hr />
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data" class="row gap-3 shadow p-4 rounded bg-light">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <!-- Hidden input for ProductID -->
+            <input asp-for="ProductID" type="hidden" />
+
+            <!-- Name Input -->
+            <div class="form-group">
+                <label asp-for="Name" class="control-label mb-2 text-orange"></label>
+                <input asp-for="Name" class="form-control border-orange" placeholder="Enter product name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Price Input -->
+            <div class="form-group">
+                <label asp-for="Price" class="control-label mb-2 text-orange"></label>
+                <input asp-for="Price" class="form-control border-orange" placeholder="Enter product price" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <!-- Description Input -->
+            <div class="form-group">
+                <label asp-for="Description" class="control-label mb-2 text-orange"></label>
+                <textarea asp-for="Description" class="form-control border-orange" style="height:100px; resize:none" placeholder="Enter product description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <!-- Category Dropdown -->
+            <div class="form-group">
+                <label asp-for="CategoryId" class="control-label mb-2 text-orange">Category</label>
+                <select asp-for="CategoryId" class="form-control border-orange" asp-items="items"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <!-- File Input for Images -->
+            <div class="form-group">
+                <label class="control-label mb-2 text-orange">Images</label>
+                <input type="file" multiple asp-for="files" class="form-control border-orange" />
+                <span asp-validation-for="files" class="text-danger"></span>
+            </div>
+
+            <!-- Submit Button (Create or Update) -->
+            <div class="form-group mb-2">
+                <input type="submit" class="btn btn-lg btn-orange form-control" value="@(Model.ProductID == 0 ? "Create" : "Update")" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Back to List Link -->
+<div class="text-center mt-3">
+    <a asp-action="Index" class="btn btn-outline-orange">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<style>
+    /* Consistent Orange Theme */
+
+    /* Shadow and border radius for form */
+
+    /* General styling for the form */
+    label {
+        font-weight: bold;
+    }
+
+    h1 {
+        font-weight: bold;
+    }
+
+    input[type='submit'] {
+        background-color: #292c2f !important;
+        color: white !important;
+    }
+
+    input[type='submit']:hover {
+            background-color: #3a4147 !important;
+    }
+</style>

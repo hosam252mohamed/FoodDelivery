@@ -1,0 +1,138 @@
+﻿@model IEnumerable<Coupun>
+@{
+    ViewData["Title"] = "Coupon List";
+}
+
+<style>
+    /* Modern card styling */
+    .coupon-list-card {
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .coupon-list-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+    .card-header {
+        background-color: #ef8f00;
+        color: white;
+        border-radius: 15px 15px 0 0;
+        font-weight: bold;
+        text-align: center;
+        padding: 15px;
+        font-size: 1.75rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .card-header:hover {
+            background-color: #ef8f00;
+        }
+
+    .btn-success {
+        background-color: #1b2439;
+        color: white;
+        border-radius: 30px;
+        padding: 10px 20px;
+        font-size: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-success:hover {
+            background-color: #173b42;
+            transform: translateY(-2px);
+        }
+
+    .table {
+        width: 100%;
+        margin-top: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .table th {
+            background-color: #ef8f00;
+            color: white;
+            padding: 12px;
+            border: none;
+            transition: background-color 0.3s ease;
+            width: fit-content !important;
+        }
+
+            .table th:hover {
+                background-color: #e68a00;
+            }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+
+    .table-striped tbody tr:nth-of-type(even) {
+        background-color: #f2f2f2;
+    }
+
+    .table-bordered th, .table-bordered td {
+        border: none;
+    }
+
+    /* Animation for buttons */
+    .btn {
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="card shadow border-0 my-4 coupon-list-card">
+    <div class="card-header bg-gradient py-3">
+        <h2 class="text-white">Coupon List</h2>
+    </div>
+    <div class="card-body p-4">
+        <div class="row pb-3">
+            <div class="text-end">
+                <a asp-action="Upsert" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Create
+                </a>
+            </div>
+        </div>
+
+        <table id="tblData" class="table table-bordered table-striped w-100">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Discount</th>
+                    <th>Min Amount</th>
+                    <th>Expiration</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/js/coupon.js"></script>
+}

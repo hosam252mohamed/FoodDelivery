@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Food Delivery</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="~/FoodDelivery.Web.styles.css" asp-append-version="true" />
+    @* <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0-alpha3/css/bootstrap.min.css"> *@
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+    <!-- Template Stylesheet -->
+    <link href="/css/style.css" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Nunito', sans-serif;
+        }
+    </style>
+    @RenderSection("Styles", false)
+</head>
+<body>
+    <div class="container-fluid position-relative p-0 mb-4">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
+            <a href="/" class="navbar-brand p-0">
+                <h1 class="prime-color m-0"><i class="fa fa-utensils me-3"></i>Restoran</h1>
+                <!-- <img src="/Images/Local/logo.png" alt="Logo"> -->
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0 pe-4" id="nav">
+                    <a href="/" class="nav-item nav-link active">Home</a>
+                    @if (!User.Identity.IsAuthenticated)
+                    {
+                        <a href="/Main/Home/About" class="nav-item nav-link">About</a>
+                        <a href="/Main/Home/Service" class="nav-item nav-link">Service</a>
+                        <a href="/Customer/Product/Index" class="nav-item nav-link">Items</a>
+                        <a href="/Main/Home/Contact" class="nav-item nav-link">Contact</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                            <div class="dropdown-menu m-0">
+                                <a href="/Customer/Booking/Index" class="dropdown-item">Book a Table</a>
+                                <a href="/Main/Home/Team" class="dropdown-item">Our Team</a>
+                                <a href="/Main/Home/Testimonial" class="dropdown-item">Testimonial</a>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="/Admin/Order" class="nav-item nav-link">Manage Orders</a>
+                            <a href="/Admin/Booking" class="nav-item nav-link">Manage Reservations</a>
+                        
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+                                <div class="dropdown-menu m-0">
+                                    <a href="/Admin/Product" class="dropdown-item">Product</a>
+                                    <a href="/Admin/Category" class="dropdown-item">Category</a>
+                                    <a href="/Admin/Coupun" class="dropdown-item">Coupun</a>
+                                    <hr class="my-2" />
+                                    <a href="/Admin/User" class="dropdown-item">Manage Users</a>
+                                    <a href="/Identity/Account/Register" class="dropdown-item">Register User</a>
+                                </div>
+                            </div>
+                        }
+                        else if (User.IsInRole("Customer"))
+                        {
+                            <li id="shopping-link">@await Component.InvokeAsync("Cart")</li>
+                            <a href="/Customer/Product" class="nav-item nav-link">Products</a>
+                            <a href="/Customer/Order/Index" class="nav-item nav-link">My Orders</a>
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Booking</a>
+                                <div class="dropdown-menu m-0">
+                                    <a href="/Customer/Booking/Index" class="dropdown-item">Book a Table</a>
+                                    <a href="/Customer/Booking/MyBookings" class="dropdown-item">My Bookings</a>
+                                </div>
+                            </div>
+
+                          
+
+                        }
+                    }
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+        @RenderSection("NavPart", false)
+    </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <partial name="_Notification" />
+            @RenderBody()
+        </main>
+    </div>
+    <div class="container-fluid bg-dark text-light footer mt-3" style="position: initial;">
+        <div class="container py-5">
+            <div class="row g-5">
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="section-title ff-secondary text-start fw-normal mb-4 prime-color">Company</h4>
+                    <a class="btn btn-link" style="margin-bottom: 1rem;" href="/Main/Home/About">About Us</a>
+                    <a class="btn btn-link" style="margin-bottom: 1rem;" href="/Main/Home/Contact">Contact Us</a>
+                    <a class="btn btn-link" style="margin-bottom: 1rem;" href="/Customer/Booking/Index">Booking</a>
+                    <a class="btn btn-link" style="margin-bottom: 1rem;" href="/Main/Home/Service">Service</a>
+                    <a class="btn btn-link" style="margin-bottom: 1rem;" href="/Main/Home/Testimonial">Testimonials</a>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="section-title ff-secondary text-start text-primary mb-4 fw-normal prime-color" >Candidates</h4>
+                    <h6 class="text-light fw-normal" style="margin-bottom: 2.2rem;"><i class="bi bi-person-circle me-2"></i>Hossam Mohamed</h6>
+                    <h6 class="text-light fw-normal" style="margin-bottom: 2.2rem;"><i class="bi bi-person-circle me-2"></i>Ahmed Abdelrahman</h6>
+                    <h6 class="text-light fw-normal" style="margin-bottom: 2.2rem;"><i class="bi bi-person-circle me-2"></i>Mohannad Elsayed</h6>
+                    <h6 class="text-light fw-normal" style="margin-bottom: 2.2rem;"><i class="bi bi-person-circle me-2"></i>Abdelrahman Ahmed</h6>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 prime-color">Opening</h4>
+                    <h5 class="text-light fw-normal">Monday - Saturday</h5>
+                    <p>09AM - 09PM</p>
+                    <h5 class="text-light fw-normal">Sunday</h5>
+                    <p>10AM - 08PM</p>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4 prime-color">Newsletter</h4>
+                    <p style="white-space: initial">Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+                    <div class="position-relative mx-auto" style="max-width: 400px;">
+                        <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="email" id="email-sub" name="email" placeholder="Your email" style="padding-right: 97px !important;">
+                        <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2" onclick=Subscribe()>SignUp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="copyright">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0" style="white-space: normal;">
+                        &copy; <a class="border-bottom" href="#">FoodDelivery</a>, All Right Reserved.
+
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a class="border-bottom" href="">DEPI Trainees</a>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="footer-menu">
+                            <a asp-action="Index">Home</a>
+                            <a href="">Cookies</a>
+                            <a href="">Help</a>
+                            <a href="/Main/Home/Contact">FQAs</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Template Javascript -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

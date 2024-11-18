@@ -1,0 +1,203 @@
+﻿@model IEnumerable<FoodDelivery.Models.Booking>
+
+@section Styles {
+    <style>
+        /* Styling for the main reservation container */
+        .reservation-container {
+            margin-top: 30px;
+        }
+
+        /* Table styling */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .table th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .table tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .table tr:hover {
+            background-color: #ff9800;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Button styles with orange color */
+        .btn {
+            padding: 8px 15px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: #FF8C00; /* Orange color */
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #FF6500; /* Darker orange on hover */
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background-color: #FF8C00; /* Orange color for cancel */
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #FF6500; /* Darker orange on hover */
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: #FF8C00; /* Orange color for back button */
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #FF6500; /* Darker orange on hover */
+            transform: translateY(-2px);
+        }
+
+        /* Fade-in animation */
+        @@keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            },
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        media (max-width: 768px) {
+            .table th, .table td {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        #tblData {
+            overflow: auto;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+}
+
+<div class="container reservation-container">
+    <h2 class="text-center mb-4">My Table Reservations</h2>
+
+    <form method="get" class="row mb-4">
+        <div class="col-md-4">
+            @Html.DropDownList("status", new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Value = "", Text = "All Statuses" },
+                new SelectListItem { Value = "Pending", Text = "Pending" },
+                new SelectListItem { Value = "Confirmed", Text = "Confirmed" },
+                new SelectListItem { Value = "Canceled", Text = "Canceled" }
+            }, "Value", "Text", ViewData["selectedStatus"] as string), "Select Status", new { @class = "form-control" })
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Filter</button>
+        </div>
+    </form>
+    <div id="tblData">
+        <table id="table" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Number of People</th>
+                    <th>Status</th>
+                    <th>Special Request</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model)
+                {
+                    <tr>
+                        <td>@booking.DateAndTime.ToString("yyyy-MM-dd HH:mm")</td>
+                        <td>@booking.NumberOfPeople</td>
+                        <td>@booking.Status</td>
+                        @if (booking.SpecialRequest is null)
+                        {
+                            <td>None</td>
+                        }
+                        else
+                        {
+                            <td>@booking.SpecialRequest</td>
+                        }
+                        <td>
+                            @if (booking.Status == "Pending")
+                            {
+                                <button type="submit" onclick="Cancel(@booking.Id)" class="btn btn-danger btn-sm">Cancel</button>
+                            }
+                            else
+                            {
+                                <span>N/A</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to Home</a>
+</div>
+
+@section Scripts {
+    <script>
+        function Cancel(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Cancel it!',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/Customer/Booking/Cancel/"+id,
+                        type: 'POST',
+                        success: function (data) {
+                            $('#tblData').load(document.URL + ' #table');
+                            toastr.success(data.message);
+                        },
+                        error: function (data) {
+                            toastr.error(data.message);
+                        }
+                    })
+                }
+            })
+        }
+    </script>
+}

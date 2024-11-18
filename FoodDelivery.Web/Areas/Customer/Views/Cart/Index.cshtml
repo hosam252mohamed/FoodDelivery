@@ -1,0 +1,74 @@
+﻿@model CartViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="/css/cart.css" />
+}
+
+<div class="card" id="cart-container">
+    <div class="row" id="cart">
+        <div class="col-md-8 cart">
+            <div class="title">
+                <div class="row">
+                    <div class="col-8"><h4 class="m-0"><b>Shopping Cart</b></h4></div>
+                    <div class="col-4 align-self-center text-right text-muted">@Model.CartsList.Count items</div>
+                </div>
+            </div>
+            <div class="row border-top border-bottom">
+
+                @if (Model.CartsList.Count == 0)
+                {
+                    <div class="f-2">No Items Found</div>
+                }
+                else
+                    foreach (var item in Model.CartsList)
+                    {
+                        <div class="row main align-items-center">
+                            <div class="col-2"><img class="img-fluid" src="/@item.Product.ProductImages.First().ImageUrl"></div>
+                            <div class="col">
+                                <div class="row text-muted" style="font-size: 14px">@item.Product.Category.Name</div>
+                                <div class="row text-start"><a style="padding: 0 !important" href="/Customer/Product/Details/@item.Product.ProductID">@item.Product.Name</a></div>
+                            </div>
+                            <div class="col">
+                                <a onclick=Minus('@item.CartID')>-</a><a class="border">@item.Count</a><a onclick=Plus('@item.CartID')>+</a>
+                            </div>
+                            <div class="col">&euro; @(item.Product.Price * item.Count)<span onclick=Delete('@item.CartID') class="close ms-2">&#10005;</span></div>
+                        </div>
+                    }
+            </div>
+            <div class="back-to-shop"><a href="/Customer/Home/Index">&leftarrow; Back to Home</a></div>
+        </div>
+        <div class="col-md-4 summary">
+            <div><h5><b>Summary</b></h5></div>
+            <hr>
+            <div class="row">
+                <div class="col" style="padding-left:0;">Products (@Model.CartsList.Count)</div>
+            </div>
+            @* <form>
+            <p>DISCOUNT CODE</p>
+            <div class="input-group flex-nowrap mb-3">
+            <input id="coupun-code" name="coupun" placeholder="Enter your code">
+            <div class="input-group-append">
+            <input type="submit" id="coupun-btn" value="Apply"/>
+            </div>
+            <span class="coupun-span"></span>
+            </div>
+            </form> *@
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">TOTAL PRICE</div>
+                <div class="col text-right">&euro; @Model.orderHeader.OrderTotal</div>
+            </div>
+            <a class="btn" asp-action="Summary">Checkout</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/js/cart.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

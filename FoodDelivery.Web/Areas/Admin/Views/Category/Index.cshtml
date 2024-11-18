@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Category>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    /* Modern table styling */
+    .category-table {
+        width: 100%;
+        margin-top: 20px;
+        border-collapse: collapse;
+    }
+
+        .category-table th, .category-table td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .category-table th {
+            background-color: #343a40;
+            color: white;
+            font-weight: bold;
+        }
+
+        .category-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .category-table td {
+            vertical-align: middle;
+        }
+
+    .action-links a {
+        margin-right: 10px;
+        color: #343a40;
+        text-decoration: none;
+    }
+
+        .action-links a:hover {
+            color: #212224;
+            text-decoration: underline;
+        }
+
+    .create-btn {
+        background-color: #FF8C00;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+    }
+
+        .create-btn:hover {
+            background-color: #FF6A10;
+            color: white;
+        }
+
+</style>
+
+<h1 class="text-center">@ViewData["Title"]</h1>
+
+<p class="text-center">
+    <a asp-action="Create" class="create-btn">Create New</a>
+</p>
+
+<table class="category-table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="action-links">
+                    @Html.ActionLink("Edit", "Edit", new { id = item.CategoryID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.CategoryID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

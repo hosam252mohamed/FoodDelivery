@@ -1,0 +1,215 @@
+﻿@model IEnumerable<FoodDelivery.Models.OrderHeader>
+
+@{
+    ViewData["Title"] = "Order List";
+    var selectedStatus = Context.Request.Query["status"].ToString();
+}
+
+@section Styles {
+    <style>
+
+        #tblData {
+            overflow: auto;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+}
+
+<div class="container mt-4">
+    <h2>Manage Orders</h2>
+
+    <form method="get" class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" name="search" value="@Context.Request.Query["search"]" class="form-control" placeholder="Search by Customer Name or Order ID" />
+        </div>
+        <div class="col-md-4">
+            <select name="status" class="form-control">
+                @if (string.IsNullOrEmpty(selectedStatus))
+                {
+                    <option value="" selected>All Statuses</option>
+                }
+                else
+                {
+                    <option value="">All Statuses</option>
+                }
+
+                @if (selectedStatus == "Pending")
+                {
+                    <option value="Processing" selected>Processing</option>
+                }
+                else
+                {
+                    <option value="Processing">Processing</option>
+                }
+
+                @if (selectedStatus == "Shipped")
+                {
+                    <option value="Shipped" selected>Shipped</option>
+                }
+                else
+                {
+                    <option value="Shipped">Shipped</option>
+                }
+
+                @if (selectedStatus == "Delivered")
+                {
+                    <option value="Delivered" selected>Delivered</option>
+                }
+                else
+                {
+                    <option value="Delivered">Delivered</option>
+                }
+
+                @if (selectedStatus == "Cancelled")
+                {
+                    <option value="Cancelled" selected>Cancelled</option>
+                }
+                else
+                {
+                    <option value="Cancelled">Cancelled</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+
+    @if (Model.Any())
+    {
+        <div id="tblData">
+            <table id="orderTable" class="table table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer Name</th>
+                        <th>Order Date</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model)
+                    {
+                        <tr>
+                            <td>@order.Id</td>
+                            <td>@order.shippingInfo.Name</td>
+                            <td>@order.OrderDate.ToString("yyyy-MM-dd hh:mm")</td>
+                            @if(@order.OrderTotal == 0)
+                            {
+                                <td>Free</td>
+                            }
+                            else 
+                            {
+                                <td>@order.OrderTotal.ToString("C")</td>
+
+                            }
+                            <td>@order.OrderStatus</td>
+                            <td>
+                                <a href="@Url.Action("Details", "Order", new { id = order.Id })" class="btn btn-info btn-sm">View</a>
+                                <a href="@Url.Action("EditStatus", "Order", new { id = order.Id })" class="btn btn-warning btn-sm">Edit Status</a>
+                                <form asp-action="Delete" asp-route-id="@order.Id" method="post" class="d-inline-block">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>No orders found.</p>
+    }
+</div>
+
+<!-- Optional JavaScript for additional functionality -->
+@section Scripts {
+    <script>
+        // Optionally, you could add a simple script to filter table rows dynamically
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.querySelector('input[name="search"]');
+            const tableRows = document.querySelectorAll('#orderTable tbody tr');
+
+            searchInput.addEventListener('input', function () {
+                const searchText = this.value.toLowerCase();
+                tableRows.forEach(row => {
+                    const orderId = row.querySelector('td:nth-child(1)').textContent;
+                    const customerName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+
+                    if (orderId.includes(searchText) || customerName.includes(searchText)) {
+                        row.style.display = "";
+                    } else {
+                        row.style.display = "none";
+                    }
+                });
+            });
+        });
+    </script>
+}
+
+<!-- Custom Styles -->
+<style>
+    /* Your Custom Styling */
+    table {
+        width: 100%;
+    }
+
+    th, td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .btn {
+        margin-right: 5px;
+    }
+
+    .container {
+        margin-top: 30px;
+    }
+
+    .btn-primary {
+        background-color: #ff9800;
+        border-color: #ff9800;
+    }
+
+        .btn-primary:hover {
+            background-color: #e68a00;
+            border-color: #e68a00;
+        }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+
+    .btn-warning {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+</style>

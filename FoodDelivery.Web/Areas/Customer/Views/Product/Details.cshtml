@@ -1,0 +1,70 @@
+﻿@model Cart
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+@section Styles {
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="/css/customerProduct.css" />
+}
+
+<style>
+	.swiper-pagination-bullet-active {
+		background-color: #000;
+	}
+</style>
+
+<form method="post" asp-action="Details" asp-route-id="@Model.ProductID">
+	<input hidden asp-for="ProductID" />
+	<div class="container">
+		<div><a asp-action="Index" class="back-index">Back To Home</a></div>
+		<div class="card mt-3">
+			<div class="container-fliud">
+				<div class="wrapper row">
+					<div class="preview col-md-5">
+						<div class="preview-pic tab-content">
+							<swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
+											  thumbs-swiper=".mySwiper2" space-between="10" navigation="true">
+								@foreach (var item in Model.Product.ProductImages)
+								{
+									<swiper-slide>
+										<img src="/@item.ImageUrl" />
+									</swiper-slide>
+								}
+							</swiper-container>
+							<swiper-container class="mySwiper2" space-between="10" slides-per-view="4" free-mode="true"
+											  watch-slides-progress="true">
+								@foreach (var item in Model.Product.ProductImages)
+								{
+									<swiper-slide class="me-md-0">
+										<img src="/@item.ImageUrl" />
+									</swiper-slide>
+								}
+							</swiper-container>
+						</div>
+					</div>
+					<div class="details col-md-7 justify-content-between">
+						<div class="specs">
+							<h3 class="product-title">@Model.Product.Name</h3>
+							<p class="product-description">@Model.Product.Description</p>
+						</div>
+						<div class="add">
+							<h4 class="price">Price: <span>$@Model.Product.Price</span></h4>
+							<input asp-for="Count" class="form form-control" />
+							<div class="my-3"><span asp-validation-for="Count" style="color: red"/></div>
+							<button class="add-to-cart btn btn-default" type="submit">add to cart</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

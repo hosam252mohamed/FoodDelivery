@@ -1,0 +1,119 @@
+﻿@model OrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<div class="card mt-4 p-4">
+    <h2 class="mb-4">Order Details - #@Model.OrderHeader.Id</h2>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-3 mb-4">
+                <h4>Customer Information</h4>
+                <p><strong>Name:</strong> @Model.OrderHeader.shippingInfo.Name</p>
+                <p><strong>Email:</strong> @Model.OrderHeader.ApplicationUser.Email</p>
+                <p><strong>Phone:</strong> @Model.OrderHeader.shippingInfo.Phone</p>
+                <p><strong>Shipping Address:</strong> @Model.OrderHeader.shippingInfo.FullAddress</p>
+                <p><strong>Order Status:</strong> @Model.OrderHeader.OrderStatus</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-3 mb-4">
+                <h4>Order Information</h4>
+                <p><strong>Order Date:</strong> @Model.OrderHeader.OrderDate.ToString("yyyy-MM-dd hh:mm:ss tt")</p>
+                @if (Model.OrderHeader.CoupunCode != null)
+                {
+                    <p><strong>Coupun: </strong> @Model.OrderHeader.CoupunCode</p>
+                    @if (Model.OrderHeader.CoupunType == "Percent")
+                    {
+                        <p><strong>Discount Amount: </strong> %@Math.Round(Model.OrderHeader.CoupunDiscount,0)</p>
+                    }
+                    else
+                    {
+                        <p><strong>Discount Amount: </strong> @Model.OrderHeader.CoupunDiscount.ToString("C")</p>
+
+                    }
+                }
+                @if(Model.OrderHeader.OrderTotal == 0)
+                {
+                    <p><strong>Total Amount:</strong> Free </p>
+                }
+                else 
+                {
+                    <p><strong>Total Amount:</strong> @Model.OrderHeader.OrderTotal.ToString("C")</p>
+                }
+                <p><strong>Payment Status:</strong> @Model.OrderHeader.PaymentStatus</p>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <h4>Order Items</h4>
+    <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderDetails)
+            {
+                <tr>
+                    <td>@item.Product.Name</td>
+                    <td>@item.Quantity</td>
+                    <td>$@item.Price</td>
+                    <td>$@(item.Quantity * item.Price)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <a href="@Url.Action("Index", "Order")" class="btn btn-secondary mt-4">Back to Orders</a>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+    }
+
+        .table thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .table th,
+        .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+</style>

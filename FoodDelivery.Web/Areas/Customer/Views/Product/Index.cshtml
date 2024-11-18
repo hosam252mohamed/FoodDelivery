@@ -1,0 +1,159 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="/css/customerHome.css" />
+    <style>
+        #prevPage.disable ,
+        #nextPage.disable {
+            background-color: #777;
+            pointer-events: none;
+        }
+        #pagination {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        }
+        #pageCount {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid;
+            border-radius: 8px;
+            height: 100%;
+        }
+    </style>
+}
+
+<h1 class="text-center mb-4 fw-bold"><i class="bi bi-bag-check-fill"></i> Products</h1>
+
+<!-- Filter and Search Section -->
+<div class="row mb-4 p1">
+    <div class="col-sm-5 col-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search product by name...">
+    </div>
+    <div class="col-5">
+        <select id="categorySelect" class="form-select">
+            <option value="">All Categories</option>
+            @foreach (var category in ViewBag.Categories)
+            {
+                <option value="@category.CategoryID">@category.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-sm-2 col-3">
+        <div id="pageCount"></div>
+    </div>
+</div>
+
+<!-- Products Container -->
+<div id="productsContainer" class="row">
+    @* The product cards will be dynamically loaded here *@
+</div>
+
+<!-- Pagination -->
+<div id="pagination" class="text-center mt-4">
+    <button id="prevPage" class="btn btn-primary">Previous</button>
+    <button id="nextPage" class="btn btn-primary">Next</button>
+</div>
+
+@section Scripts {
+    <script>
+        var currentPage = 1;
+        var totalItems = 0;
+        var pageSize = 0;
+
+        // Function to fetch products via AJAX
+        function fetchProducts() {
+            var search = $('#searchInput').val();
+            var categoryId = $('#categorySelect').val();
+
+            $.ajax({
+                url: '@Url.Action("Index", "Product")',
+                async: false,
+                data: { search: search, categoryId: categoryId, page: currentPage },
+                success: function (response) {
+                    //Scroll To Top
+                    window.scrollTo(0,63);
+                    //set variables initialized
+                    totalItems = response.totalItems;
+                    pageSize = response.pageSize;
+                    // Clear current products
+                    $('#productsContainer').empty();
+
+                    // Loop through the products and append to the container
+                    $.each(response.products, function (i, product) {
+                        var productHtml = `<div class="col-lg-3 col-md-4 col-sm-6" style="padding: 8px;">
+                                        <div class="product-grid">
+                                                <form action="/Customer/Product/Details" method="post">
+                                                    <input name="Count" value="1" hidden />
+                                                    <input name="ProductID" value="${product.productID}" hidden />
+                                                    <div class="product-content">
+                                                                <h2 class="title"><a href="/Customer/Product/Details/${product.productID}">${product.name}</a></h2>
+                                                                <div class="price">$${product.price}</div>
+                                                        <ul class="product-links">
+                                                            <li>
+                                                                    <button style="border: none;" type="submit"><i class="bi bi-bag"></i></button>
+                                                            </li>
+                                                                    <li><a href="/Customer/Product/Details/${product.productID}"><i class="bi bi-eye-fill"></i></a></li>
+                                                        </ul>
+                                                                <p class="desc">${product.description}</p>
+                                                    </div>
+                                                </form>
+                                            <div class="product-image">
+                                                <img class="pic-1" src="/${product.productImages[0].imageUrl}">
+                                                ${product.productImages.length >= 2 ? `<img class="pic-2" src="/${product.productImages[1].imageUrl}">` : ''}
+                                                <span class="product-sale-label">${product.category.name}</span>
+                                            </div>
+                                        </div>
+                                    </div>`;
+
+                        $('#productsContainer').append(productHtml);
+                    });
+
+                    //disable previous
+                    if (currentPage == 1)
+                        $("#prevPage")[0].classList.add("disable");
+                    else
+                        $("#prevPage")[0].classList.remove("disable");
+                    //disable next
+                    var totalPages = Math.ceil(totalItems / pageSize);
+                    if (totalPages == 0) totalPages = 1;
+
+                    if (currentPage == totalPages)
+                        $("#nextPage")[0].classList.add("disable");
+                    else
+                        $("#nextPage")[0].classList.remove("disable");
+
+                    $("#pageCount")[0].innerHTML = `${currentPage}<span style="margin: 0 10px;">/</span>${totalPages}`;
+                }
+            });
+
+        }
+
+        // Initial load of products
+        fetchProducts();
+
+        // Filter by category or search
+        $('#categorySelect, #searchInput').on('change keyup', function () {
+            currentPage = 1; // Reset to the first page on filter or search change
+            fetchProducts();
+        });
+
+        // Pagination
+        $('#prevPage').click(function () {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchProducts();
+            }
+        });
+
+        $('#nextPage').click(function () {
+            if ((totalItems - pageSize * currentPage) > 0) {
+                currentPage++;
+                fetchProducts();
+            }
+        });
+    </script>
+}

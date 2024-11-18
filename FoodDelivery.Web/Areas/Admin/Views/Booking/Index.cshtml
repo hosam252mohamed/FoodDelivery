@@ -1,0 +1,152 @@
+﻿@model IEnumerable<FoodDelivery.Models.Booking>
+
+@{
+    ViewData["Title"] = "Reservations";
+}
+
+@section Styles {
+    <style>
+        /* Modern table styling */
+        .reservations-table {
+            width: 100%;
+            border-collapse: collapse;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .reservations-table th, .reservations-table td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        .reservations-table th {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        .reservations-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .reservations-table tr:hover {
+            background-color: #f1c40f;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-edit {
+            background-color: #FF8C00;
+            border-color: #FF8C00;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background-color: #FF6500;
+            border-color: #FF6500;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+        .btn-back {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-back:hover {
+            background-color: #5a6268;
+            color: white;
+        }
+
+        /* Responsive Media Queries */
+        @@media (max-width: 767.98px) {
+            .reservations-table th,
+            .reservations-table td {
+                padding: 10px;
+                white-space: nowrap;
+            }
+
+            .reservations-table {
+                font-size: 14px;
+            }
+        }
+
+        /* Keyframes for animation */
+        @@keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #tblData {
+            overflow: auto;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+}
+
+<h2 class="mt-4 mb-4">Table Reservations</h2>
+
+<div id="tblData">
+    <table class="table table-bordered table-striped reservations-table">
+        <thead>
+            <tr>
+                <th>Customer Name</th>
+                <th>Email</th>
+                <th>Date & Time</th>
+                <th>Number of People</th>
+                <th>Special Request</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.CustomerName</td>
+                    <td>@booking.Email</td>
+                    <td>@booking.DateAndTime.ToString("yyyy-MM-dd HH:mm")</td>
+                    <td>@booking.NumberOfPeople</td>
+                    @if(booking.SpecialRequest is null)
+                    {
+                        <td>None</td>
+                    }
+                    else 
+                    {
+                        <td>@booking.SpecialRequest</td>
+                    }
+                    <td>@booking.Status</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@booking.Id" class="btn btn-edit btn-sm">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@booking.Id" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-delete btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<a asp-action="Index" asp-controller="Home" asp-area="Main" class="btn btn-back mt-3">Back to Home</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,107 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout != null)
+    {
+        Layout = parentLayout.ToString();
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+
+@section Styles {
+    <style>
+        /* General page styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Container for the account settings */
+        .account-settings-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Section title styling */
+        h1, h2 {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+        }
+
+        /* Horizontal rule styling */
+        hr {
+            margin: 1rem 0;
+            border: none;
+            height: 2px;
+            background-color: #dee2e6;
+        }
+
+        /* Navigation section */
+        .account-nav {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+            .account-nav .nav-link {
+                color: #007bff;
+                font-weight: bold;
+                margin-bottom: 10px;
+                transition: all 0.3s ease;
+            }
+
+                .account-nav .nav-link:hover {
+                    color: #0056b3;
+                }
+
+        /* Content section */
+        .account-content {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+}
+
+<div class="container mt-5">
+    <div class="account-settings-container">
+        <h1>Manage Your Account</h1>
+
+        <div class="account-settings-content">
+            <h2>Change Your Account Settings</h2>
+            <hr />
+            <div class="row">
+                <!-- Left-side navigation (partial view) -->
+                <div class="col-md-3 account-nav">
+                    <partial name="_ManageNav" />
+                </div>
+
+                <!-- Right-side content area -->
+                <div class="col-md-9 account-content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+}

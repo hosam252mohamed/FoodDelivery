@@ -1,0 +1,171 @@
+.title {
+    margin-bottom: 5vh !important;
+}
+
+.card {
+    margin: auto !important;
+    max-width: 950px !important;
+    width: 90% !important;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+    border-radius: 1rem !important;
+    border: transparent !important;
+}
+
+@media(max-width:767px) {
+    .card {
+        margin: 3vh auto !important;
+    }
+}
+
+.cart {
+    background-color: #fff !important;
+    padding: 4vh 5vh !important;
+    border-bottom-left-radius: 1rem !important;
+    border-top-left-radius: 1rem !important;
+}
+
+@media(max-width:767px) {
+    .cart {
+        padding: 3vh !important;
+        border-bottom-left-radius: unset !important;
+        border-top-right-radius: 1rem  !important;
+    }
+}
+
+.summary {
+    background-color: #ddd  !important;
+    border-top-right-radius: 1rem  !important;
+    border-bottom-right-radius: 1rem  !important;
+    padding: 4vh  !important;
+    color: rgb(65, 65, 65) !important;
+}
+
+@media(max-width:767px) {
+    .summary {
+        border-top-right-radius: unset !important;
+        border-bottom-left-radius: 1rem !important;
+    }
+}
+
+.summary .col-2 {
+    padding: 0 !important;
+}
+
+.summary .col-10 {
+    padding: 0 !important;
+}
+
+.card .row {
+    margin: 0 !important;
+}
+
+.card .title b {
+    font-size: 1.5rem !important;
+}
+
+.card .main {
+    margin: 0 !important;
+    padding: 2vh 0 !important;
+    width: 100% !important;
+}
+
+.card .col-2, .col {
+    padding: 0 1vh !important;
+}
+
+.card a {
+    text-decoration: none !important;
+    padding: 0 1vh !important;
+}
+
+.card .close {
+    font-size: 0.7rem !important;
+    cursor: pointer;
+}
+
+.card img {
+    width: 3.5rem !important;
+}
+
+.card .back-to-shop {
+    margin-top: 4rem !important;
+}
+
+.card h5 {
+    margin-top: 4vh !important;
+}
+
+.card hr {
+    margin-top: 1.25rem !important;
+}
+
+.card form {
+    padding: 2vh 0 !important;
+}
+
+.card input {
+    border: 1px solid rgba(0, 0, 0, 0.137) !important;
+    padding: 1vh !important;
+    margin-bottom: 4vh !important;
+    outline: none !important;
+    width: 100% !important;
+    background-color: rgb(247, 247, 247) !important;
+}
+
+input:focus::-webkit-input-placeholder {
+    color: transparent !important;
+}
+
+.card .btn {
+    background-color: #000 !important;
+    border-color: #000 !important;
+    color: white !important;
+    width: 100% !important;
+    font-size: 0.7rem !important;
+    margin-top: 4vh !important;
+    padding: 1vh !important;
+    border-radius: 0 !important;
+}
+
+    .card .btn:focus {
+        box-shadow: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        color: white !important;
+        -webkit-box-shadow: none !important;
+        -webkit-user-select: none !important;
+        transition: none !important;
+    }
+
+    .card .btn:hover {
+        color: white !important;
+    }
+
+.main {
+    flex-wrap: nowrap;
+}
+.main > div:last-child {
+    white-space: nowrap;
+}
+
+.card a {
+    color: black !important;
+    cursor: pointer !important;
+    transition: 0.3s;
+}
+.card a:hover {
+}
+
+.card a:hover,
+.close:hover {
+color: var(--primary) !important;
+}
+a.border:hover {
+    color: initial !important;
+}
+a.border {
+    cursor: default !important;
+}
+.coupun-span {
+    color: mediumseagreen;
+}

@@ -1,0 +1,79 @@
+﻿@model FoodDelivery.Models.OrderHeader
+
+@{
+    ViewData["Title"] = "Edit Order Status";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Order Status - #@Model.Id</h2>
+
+    <form method="post" asp-action="EditStatus">
+        <div class="form-group">
+            <label for="status">Order Status</label>
+            @if (Model.OrderStatus != "Cancelled")
+            {
+                <select name="status" class="form-control">
+                    @if (Model.OrderStatus == "Approved")
+                    {
+                        <option value="Approved" selected>Approved</option>
+                    }
+                    else
+                    {
+                        <option value="Approved">Approved</option>
+                    }
+                    @if (Model.OrderStatus == "Shipped")
+                    {
+                        <option value="Shipped" selected>Shipped</option>
+                    }
+                    else
+                    {
+                        <option value="Shipped">Shipped</option>
+                    }
+
+                    @if (Model.OrderStatus == "Delivered")
+                    {
+                        <option value="Delivered" selected>Delivered</option>
+                    }
+                    else
+                    {
+                        <option value="Delivered">Delivered</option>
+                    }
+
+                    @if (Model.OrderStatus == "Cancelled")
+                    {
+                        <option value="Cancelled" selected>Cancelled</option>
+                    }
+                    else
+                    {
+                        <option value="Cancelled">Cancelled</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary mt-4">Save</button>
+            }
+            else
+            {
+                <input asp-for="OrderStatus" class="form-control" disabled/>
+
+            }
+            <a href="@Url.Action("Index", "Order")" class="btn btn-secondary mt-3">Back</a>
+        </div>
+    </form>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .btn-primary {
+        background-color: #ff9800;
+        border-color: #ff9800;
+    }
+
+        .btn-primary:hover {
+            background-color: #e68a00;
+            border-color: #e68a00;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+    }
+</style>

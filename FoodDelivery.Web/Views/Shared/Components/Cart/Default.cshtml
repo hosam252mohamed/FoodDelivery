@@ -1,0 +1,11 @@
+﻿@model int
+<a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="nav-item nav-link" id="shopping-cart">
+	<i class="bi bi-cart cart-logo"><span class="cart-count">@Model</span></i>
+	<script>
+		let cart = document.querySelector(".cart-count");
+		if (cart.textContent == '0') {
+			cart.style.display = 'none';
+		}
+		else cart.style.display = 'initial';
+	</script>
+</a>

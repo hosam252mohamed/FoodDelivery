@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAN+Un7KtcNEqhwP6TE4ucMAAAAAACAAAAAAAQZgAAAAEAACAAAACoNmKcEb1Yx8IJ+TApYBK7Khmbw/1Ton2VALJoiarLPQAAAAAOgAAAAAIAACAAAAC3Q4g4ABcgn+PjsdWif7slnHQDvP5hDUykKHUgT/XQ7yAAAAByTvcY4wlxOJWCwdK9yCeCoz2IOSgK2RRIXxEpRBXfxUAAAAB3mJzE4lJD8QnBYS7dJ4C47MoP1wCDuij9qW+dinBguACv0wY750feMGi+ujEWeK46z4z+wm9dd/DWHo+43298</EncryptedPassword>
+    <History>False|2024-10-07T22:15:39.4540729Z;False|2024-10-08T01:14:34.2120077+03:00;False|2024-10-08T01:12:53.1759664+03:00;False|2024-10-08T01:04:49.0087022+03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="ConnStr">
+      <Value>Server=db8748.databaseasp.net%3b Database=db8748%3b User Id=db8748%3b Password=7e%3fA#Lr3x4Z-%3b Encrypt=False%3b MultipleActiveResultSets=True%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="Amazon.Repository.Data.ApplicationDbContext">
+      <Value>Server=db8748.databaseasp.net%3b Database=db8748%3b User Id=db8748%3b Password=7e%3fA#Lr3x4Z-%3b Encrypt=False%3b MultipleActiveResultSets=True%3b</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

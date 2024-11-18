@@ -1,0 +1,109 @@
+﻿@using Humanizer
+@using System.Security.Claims
+@model List<CustomerReview>
+@{
+    ViewData["Title"] = "Customer Reviews";
+    var claims = User.FindFirst(ClaimTypes.NameIdentifier);
+    string userId = "";
+    if (claims != null) userId = claims.Value;
+}
+
+@section Styles {
+    <style>
+        .card,.comment {
+            box-shadow: -2px 3px 8px 1px #e4e4e4;
+        }
+        textarea {
+            resize: none;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+        }
+
+        .dropdown-menu-right {
+            right: 0;
+            left: auto;
+        }
+        .error {
+            color: red;
+        }
+        .navbar-expand-lg .navbar-nav .nav-link {
+            padding: 30px 0 !important;
+        }
+        @@media (max-width: 992px) {
+            .navbar-expand-lg .navbar-nav .nav-link {
+                padding: 12px 0 !important;
+            }
+        }
+    </style>
+	<link href="~/css/bootstrap.min.css" rel="stylesheet" />
+}
+
+<!-- Customer Reviews Start -->
+<div class="container-xxl py-5 wow fadeInUp" id="main-cont">
+    <div class="container" id="cont">
+        <div class="text-center">
+            <h5 class="section-title ff-secondary text-center text-primary fw-bold">Reviews</h5>
+            <h1 class="mb-5">What Our Clients Say</h1>
+        </div>
+        <form method="post">
+            <div class="card py-3 bg-transparent border rounded p-4 mb-3" style="background-color: #f8f9fa;">
+                <h5 class="text-primary fw-bold mb-3">Write A Review</h5>
+                <div class="d-flex flex-start w-100">
+                    <i class="bi bi-person-circle" style="font-size: 20px; margin-right: 10px;"></i>
+                    <div data-mdb-input-init class="form-outline w-100 textarea-cont">
+                        <textarea name="Text" class="form-control" id="textArea" rows="3"
+                                  style="background: #fff;" placeholder="Write your review here..."></textarea>
+                    </div>
+                </div>
+                <div class="mt-2 pt-1 text-end">
+                    <button type="submit" class="btn btn-primary btn-sm" id="buttonSub">Post Review</button>
+                </div>
+            </div>
+        </form>
+        <!-- Display all other reviews -->
+        @foreach (var review in Model)
+        {
+            <div class="comment bg-transparent border rounded p-4">
+                <i class="fa fa-quote-left fs-4 text-primary mb-3"></i>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="bi bi-person-circle" style="font-size: 20px; margin-right: 10px;"></i>
+                        <h5 class="m-0">@review.ApplicationUser.Name</h5>
+                    </div>
+                    <!-- Three dots for options (Edit/Delete) -->
+                    @if (User.Identity.IsAuthenticated && (review.AppUserId == userId || User.IsInRole("Admin")))
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
+                                <input type="hidden" name="id" value="@review.Id" id="rev-id"/>
+                                <li>
+                                    <button type="button" class="dropdown-item edit-btn">Edit</button>
+                                </li>
+                                <li>
+                                    <button type="button" class="dropdown-item text-danger deleteBtn">Delete</button>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                </div>
+                <div class="mb-2" id="review-text">@review.Text</div>
+                <div>
+                    <small class="text-muted"><i class="bi bi-clock"></i> @review.DatePublished.Humanize()</small>
+                    @if (review.DateEdited != DateTime.MinValue) {
+                    <small class="text-muted">( Edited : @review.DateEdited.Humanize() )</small>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<!-- Customer Reviews End -->
+
+@section Scripts {
+	<script src="~/js/reviews.js"></script>
+}

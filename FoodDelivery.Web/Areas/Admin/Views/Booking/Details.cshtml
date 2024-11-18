@@ -1,0 +1,15 @@
+﻿@model Booking
+
+<div class="container mt-4">
+    <h2 class="mb-4">Booking Details</h2>
+
+    <div class="card p-4">
+        <p><strong>Customer Name:</strong> @Model.CustomerName</p>
+        <p><strong>Date & Time:</strong> @Model.DateAndTime.ToString("yyyy-MM-dd HH:mm")</p>
+        <p><strong>No. of People:</strong> @Model.NumberOfPeople</p>
+        <p><strong>Special Request:</strong> @Model.SpecialRequest</p>
+        <p><strong>Status:</strong> @Model.Status</p>
+    </div>
+
+    <a href="@Url.Action("Index", "Booking")" class="btn btn-secondary mt-4">Back to Bookings</a>
+</div>

@@ -1,0 +1,66 @@
+﻿@model List<ProductImages>
+
+<div style="width: 100%; height: 100%">
+	<style>
+		body {
+			overflow-y: hidden;
+		}
+		.mySwiper {
+			height: 100%;
+			width: 100%;
+		}
+
+		swiper-slide img {
+			width: 100%;
+			height: 100%;
+			object-fit: contain;
+		}
+
+		#close {
+			font-size: 75px;
+			color: white;
+			position: absolute;
+			right: 17px;
+			top: -18px;
+			z-index: 102;
+			cursor: pointer;
+		}
+
+		#overlay {
+			width: 100%;
+			height: 100%;
+			background-color: rgb(0 0 0 / 50%);
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+
+		#show-images {
+			position: absolute;
+			width: 100%;
+			height: 100vh;
+			padding: 150px;
+			left: 0;
+			top: 0;
+			z-index: 999;
+		}
+		@@media (max-width: 760px) {
+			#show-images {
+				padding: 70px;
+			}
+		}
+	</style>
+
+	<span id="close" class="close" onclick=close()><i class="bi bi-x"></i></span>
+	<div id="overlay"></div>
+	<swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper" navigation="true">
+		@foreach (var item in Model)
+		{
+			<swiper-slide>
+				<img src="/@item.ImageUrl" />
+			</swiper-slide>
+		}
+	</swiper-container>
+
+	<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+</div>
